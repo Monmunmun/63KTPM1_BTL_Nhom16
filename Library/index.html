@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibraryHub</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="top-container">
+    <span class="navbar-text">
+        Công Thư Viện Online
+        <img src="image/vietnamlogo.png" alt="Vietnam Flag" class="vietnam-flag">
+    </span>
+</div>
+<div class="logo-container">
+    <a class="navbar-brand" href="#">
+        <img src="image/logo.png" alt="LibraryHub Logo">
+    </a>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showHomePage()">Trang chủ</a>
+            </li>
+            <div class="divider"></div>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showNotifications()">Thông Báo</a>
+            </li>
+            <div class="divider"></div>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showManageDocumentsPage()">Quản Lý Tài Liệu</a>
+            </li>
+            <div class="divider"></div>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showSupportPage()">Hỗ Trợ</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="search-bar">
+    <div class="search-container">
+        <select id="searchType" class="form-control w-25">
+            <option value="title">Tìm Kiếm Theo Tiêu Đề</option>
+            <option value="author">Tìm Kiếm Theo Tác Giả</option>
+            <option value="category">Tìm Kiếm Theo Thể Loại</option>
+        </select>
+        <input id="searchInput" type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
+        <button id="searchBtn" class="">
+            <img src="image/timkiem.png" alt="Search" style="width: 30px; height: 30px;">
+        </button>
+        <button class="btn btn-outline-dark ml-2">Tìm Kiếm Nâng Cao</button>
+        <button id="loginBtn" class="btn btn-outline-dark ml-2" onclick="showLoginPage()">Đăng nhập</button>
+    </div>
+</div>
+
+<div class="header-image" id="headerImage">
+    <!-- Ảnh header sẽ được hiển thị tại đây -->
+</div>
+
+<div id="searchResults" class="container mt-5">
+    <!-- Kết quả tìm kiếm sẽ được hiển thị ở đây -->
+</div>
+
+<div id="supportPage" class="container mt-5" style="display: none;">
+    <h2>Trang Hỗ Trợ</h2>
+    <form id="supportForm">
+        <div class="form-group">
+            <label for="nameInput">Tên:</label>
+            <input type="text" class="form-control" id="nameInput" required>
+        </div>
+        <div class="form-group">
+            <label for="emailInput">Email:</label>
+            <input type="email" class="form-control" id="emailInput" required>
+        </div>
+        <div class="form-group">
+            <label for="phoneInput">Số Điện Thoại:</label>
+            <input type="tel" class="form-control" id="phoneInput" required>
+        </div>
+        <div class="form-group">
+            <label for="messageInput">Nội Dung:</label>
+            <textarea class="form-control" id="messageInput" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Gửi</button>
+    </form>
+
+</div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Thông Báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Gửi thành công!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary custom-close-btn" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loginPage" style="display: none;">
+    <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+            <label for="loginUsername">Tên đăng nhập:  admin </label>
+            <input type="text" class="form-control" id="loginUsername" required>
+        </div>
+        <div class="form-group">
+            <label for="loginPassword">Mật khẩu:  123</label>
+            <input type="password" class="form-control" id="loginPassword" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Đăng nhập</button>
+    </form>
+</div>
+
+<div id="userProfilePage" style="display: none;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="card-img-top" src="image/profile.png" alt="Avatar">
+                    <div class="card-body">
+                        <h4 class="card-title">User Name</h4>
+                        <button class="btn btn-danger btn-block mt-3" onclick="logout()">Đăng xuất</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h2>Thông tin tài khoản</h2>
+                <form id="userInfoForm">
+                    <div class="form-group">
+                        <label for="emailInput">User Name:</label>
+                        <input type="text" class="form-control" id="userInput" value="User Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailInput">Email:</label>
+                        <input type="email" class="form-control" id="emailInput" value="user@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneInput">Số điện thoại:</label>
+                        <input type="tel" class="form-control" id="phoneInput" value="0123456789">
+                    </div>
+                </form>
+                <button class="btn btn-primary btn-block" onclick="updateUserInfo()">Cập nhật</button>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Lịch sử mượn sách</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tên sách</th>
+                                    <th>Ngày mượn</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Sách 1</td>
+                                    <td>01/01/2024</td>
+                                </tr>
+                                <tr>
+                                    <td>Sách 2</td>
+                                    <td>02/01/2024</td>
+                                </tr>
+                                <tr>
+                                    <td>Sách 3</td>
+                                    <td>03/01/2024</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Trạng thái tài liệu</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tên tài liệu</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Tài liệu 1</td>
+                                    <td>Đang sử dụng</td>
+                                </tr>
+                                <tr>
+                                    <td>Tài liệu 2</td>
+                                    <td>Đã trả</td>
+                                </tr>
+                                <tr>
+                                    <td>Tài liệu 3</td>
+                                    <td>Đang mượn</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="manageDocumentsPage" style="display: none;">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Mã sách</th>
+                <th>Ngày mượn</th>
+                <th class="due-date-header">Ngày trả</th>
+                <th>Tiêu đề</th>
+                <th>Gia hạn thêm</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Thêm dữ liệu mẫu -->
+            <tr>
+                <td>1</td>
+                <td>001</td>
+                <td>01/01/2023</td>
+                <td class="due-date">15/01/2025</td>
+                <td>Sách Toán Cao Cấp</td>
+                <td><button class="btn btn-warning" onclick="extendBookLoan(this.parentNode.parentNode)">Gia hạn</button></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>002</td>
+                <td>05/01/2023</td>
+                <td class="due-date">20/01/2023</td>
+                <td>Sách Lịch Sử Việt Nam</td>
+                <td><button class="btn btn-warning" onclick="extendBookLoan(this.parentNode.parentNode)">Gia hạn</button></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>003</td>
+                <td>05/01/2023</td>
+                <td class="due-date">20/01/2025</td>
+                <td>Sách Ngữ Văn</td>
+                <td><button class="btn btn-warning" onclick="extendBookLoan(this.parentNode.parentNode)">Gia hạn</button></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>004</td>
+                <td>05/01/2024</td>
+                <td class="due-date">20/01/2025</td>
+                <td>Sách Lịch Sử Đảng Cộng Sản Việt Nam</td>
+                <td><button class="btn btn-warning" onclick="extendBookLoan(this.parentNode.parentNode)">Gia hạn</button></td>
+            </tr>
+            <!-- Thêm các dòng khác tương tự -->
+        </tbody>
+    </table>
+    <div id="borrowedBooksCount" class="mt-3">Số sách đang mượn: 4</div>
+</div>
+
+<div id="notificationsPage" style="display: none;">
+    <h2>Thông báo đến từ thư viện</h2>
+    <ul id="notificationList">
+        <!-- Các dòng thông báo sẽ được thêm vào đây -->
+    </ul>
+</div>
+
+<div id="bookDetailModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img id="detailBookImage" src="" alt="Book Image" style="width: 100%;">
+                        <button class="btn btn-primary mt-2">Đăng Ký Mượn</button>
+                        
+                    </div>
+                    <div class="col-md-8">
+                        <h3 id="detailBookTitle">Tiêu Đề: </h3>
+                        <p id="detailBookAuthor">Tác Giả: </p>
+                        <p id="detailBookYear">Năm Xuất Bản: </p>
+                        <p id="detailBookDescription">Mô tả: </p>
+                        <p id="detailBookContents">Mục Lục: </p>
+                        <div class="form-group">
+                            <label for="userReview">User:</label>
+                            <textarea class="form-control" id="userReview" placeholder="Nhập đánh giá của bạn"></textarea>
+                            <button class="btn btn-success mt-2">Gửi</button>
+                        </div>
+                        <div id="reviews" class="reviews-section">
+                            <p>User A: Sách rất hay</p>
+                            <p>User B: Tài liệu hữu ích</p>
+                            <p>User C: Tài liệu rất ngắn gọn</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <p>Copyright © 2024 Thư Viện Online Library Hub - Tòa Nhà TowerB - 105 Trần Hòa - Định Công - Hà Nội</p>
+    <p>Điện Thoại: 0819728186 | Email: librarybook105@gmail.com</p>
+</footer>
+
+<script src="script.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
