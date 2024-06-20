@@ -111,10 +111,13 @@ document.addEventListener("DOMContentLoaded", function() {
 document.getElementById("searchBtn").addEventListener("click", function() {
     var searchValue = document.getElementById("searchInput").value.toLowerCase();
     var searchType = document.getElementById("searchType").value;
+    var headerImage = document.getElementById("headerImage");
     var searchResultsDiv = document.getElementById("searchResults");
 
     if (searchValue.trim() === "") {
+        headerImage.style.display = "none";
         searchResultsDiv.innerHTML = "<p class='text-danger'>Vui lòng nhập từ khóa tìm kiếm.</p>";
+
         return;
     }
     var searchData = [
